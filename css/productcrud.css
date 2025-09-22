@@ -1,0 +1,115 @@
+
+body{
+  background-color: #27ae60;
+}
+
+/* Scrollable table container */
+.product-table-scroll {
+  height: 70vh;
+  overflow-y: auto;
+  background: #fff;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
+}
+
+
+.product-table {
+  margin-top: 40px;
+
+height: 600px;
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  /* Remove max-height and overflow from table, handled by container */
+}
+
+.product-table th, 
+.product-table td {
+  padding: 14px 16px;
+  text-align: left;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.product-table thead {
+  background: var(--color-gold, #d4af37);
+  color: #fff;
+}
+
+.product-table tbody tr {
+  border-bottom: 1px solid #eee;
+}
+
+.product-table tbody tr:hover {
+  background: #fafafa;
+}
+
+/* Product Image -> Circular Profile Style */
+.product-table img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;       /* circle shape */
+  border: 2px solid #ddd;   /* light border */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+
+.product-table img:hover {
+  transform: scale(1.1);    /* small zoom on hover */
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.edit-btn {
+  background: #3498db;
+  color: #fff;
+}
+
+.edit-btn:hover {
+  background: #217dbb;
+}
+
+.delete-btn {
+  background: #e74c3c;
+  color: #fff;
+}
+
+.delete-btn:hover {
+  background: #c0392b;
+}
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.add-btn {
+  background: #2ecc71; /* green */
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.add-btn:hover {
+  background: #27ae60;
+}

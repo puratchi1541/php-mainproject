@@ -1,0 +1,96 @@
+/* Query Card */
+.stat-card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+/* Heading */
+.stat-card h1 {
+  margin-bottom: 20px;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #000;
+  border-left: 5px solid #d4af37; /* gold accent */
+  padding-left: 12px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Table */
+.stat-card table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  font-family: 'Raleway', sans-serif;
+}
+
+.stat-card table th {
+  background: #000;
+  color: #fff;
+  padding: 14px 16px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+}
+
+.stat-card table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #eee;
+  color: #333;
+  vertical-align: top;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  word-wrap: break-word;
+  max-width: 300px; /* keeps layout neat */
+}
+
+.stat-card table tr:hover {
+  background: rgba(212, 175, 55, 0.08); /* gold tint */
+  transition: 0.3s;
+}
+
+/* Responsive Table (Mobile View) */
+@media (max-width: 768px) {
+  .stat-card table,
+  .stat-card table thead,
+  .stat-card table tbody,
+  .stat-card table th,
+  .stat-card table td,
+  .stat-card table tr {
+    display: block;
+    width: 100%;
+  }
+
+  .stat-card table thead {
+    display: none;
+  }
+
+  .stat-card table tr {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    padding: 10px;
+    background: #fff;
+  }
+
+  .stat-card table td {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .stat-card table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #000;
+    flex-basis: 40%;
+    text-align: left;
+  }
+}

@@ -1,0 +1,212 @@
+/* === Global Layout === */
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  font-family: var(--font-primary, 'Montserrat', sans-serif);
+  background: linear-gradient(135deg, #111, #1c1c1c);
+  color: var(--color-light, #fff);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* === Sidebar === */
+.sidebar {
+  width: 260px;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-right: 1px solid rgba(212, 175, 55, 0.3);
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.4);
+}
+
+.sidebar .logo {
+  font-size: 36px;
+  color: var(--color-gold, #d4af37);
+  margin-bottom: 12px;
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+.sidebar .logo:hover {
+  transform: rotate(-10deg) scale(1.1);
+}
+
+.sidebar h2 {
+  font-family: var(--font-elegant, 'Great Vibes', cursive);
+  font-size: 28px;
+  color: var(--color-gold, #d4af37);
+  margin-bottom: 40px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+  margin: 0;
+}
+
+.sidebar ul li {
+  margin: 16px 0;
+}
+
+.sidebar ul li a {
+  display: block;
+  padding: 14px 20px;
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: 12px;
+  color: #ddd;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li a.active {
+  background: linear-gradient(135deg, var(--color-gold, #d4af37), #f5e7a3);
+  color: var(--color-dark, #000);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+}
+
+
+.main-content {
+  flex: 1;
+  padding: 35px 50px;
+  background: #f7f7f7;
+  color: var(--color-dark, #000);
+  overflow-y: auto;
+}
+
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+}
+
+.topbar h3 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-dark, #000);
+}
+
+.profile-btn {
+  padding: 10px 24px;
+  border-radius: 50px;
+  border: 1px solid var(--color-gold, #d4af37);
+  background: var(--color-dark, #000);
+  color: var(--color-gold, #d4af37);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.profile-btn:hover {
+  background: var(--color-gold, #d4af37);
+  color: var(--color-dark, #000);
+  box-shadow: 0 6px 18px rgba(212, 175, 55, 0.4);
+}
+
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.stat-card {
+  padding: 28px;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #fff, #f0f0f0);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 30px rgba(212,175,55,0.35);
+}
+
+.stat-card h4 {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #444;
+}
+
+.stat-card p {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-gold, #d4af37);
+}
+
+
+.stat-card table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 14px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.stat-card thead th {
+  background: var(--color-gold, #d4af37);
+  color: var(--color-dark, #000);
+  font-weight: 700;
+  text-align: left;
+  padding: 14px;
+}
+
+.stat-card tbody td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #e5e5e5;
+  color: #333;
+  text-align: left;
+}
+
+.stat-card tbody tr:hover {
+  background: rgba(212,175,55,0.08);
+}
+
+/* === Responsive === */
+@media (max-width: 992px) {
+  .sidebar {
+    width: 200px;
+    padding: 30px 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 15px;
+  }
+  .main-content {
+    padding: 25px;
+  }
+  .topbar {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+
+.table-scroll-container {
+    max-height: 70vh; /* maximum height relative to viewport */
+    overflow-y: auto;  /* enable vertical scrolling */
+    width: 100%;
+}
+
+.table-scroll-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
