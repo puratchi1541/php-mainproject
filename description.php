@@ -14,11 +14,12 @@ if(!isset($_GET['product_id'])){
 $id = (int)$_GET['product_id'];
 $query  = "SELECT * FROM addproduct WHERE id=$id";
 $result = mysqli_query($con,$query);
-if(!$result || mysqli_num_rows($result)==0){
+if(mysqli_num_rows($result) == 0){
     echo "Product not found";
     exit();
 }
 $row = mysqli_fetch_assoc($result);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -107,6 +108,8 @@ $row = mysqli_fetch_assoc($result);
 
 <form action="orders.php" method="POST">
   <input type="hidden" name="product_id" value="<?php echo $row['id']; ?>">
+  <input type="hidden" name="total_price" id="totalPriceInput" value="<?php echo $row['pprice']; ?>">
+  <input type="username" name="username" value="<?php echo $_SESSION['username']; ?>" hidden>
   <button class="btn btn-primary btn-block" type="submit">Proceed to Checkout</button>
 </form>
 

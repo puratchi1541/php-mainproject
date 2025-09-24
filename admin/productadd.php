@@ -13,7 +13,7 @@ include_once('../head.php');
   if (isset($_POST['add_product'])) {
       $imgname = $_FILES['pimage']['name'];
       $tempname = $_FILES['pimage']['tmp_name'];
-      $folder = "./images/product/" . $imgname;
+      $folder = "../images/product/" . $imgname;
       move_uploaded_file($tempname, $folder); 
       $pname = $_POST['pname'];
       $pcategory = $_POST['pcategory'];
@@ -24,6 +24,7 @@ include_once('../head.php');
 
       if ($result) {
           echo "<script>alert('Product added successfully!')</script>";
+          header("Location: productcrud.php");
           
           
       } else {
@@ -35,7 +36,7 @@ include_once('../head.php');
   <div class="container">
     <h2 class="section-title">Add New Product</h2>
 
-    <form class="add-product-form" method="POST" action="./admin/productadd.php" enctype="multipart/form-data">
+    <form class="add-product-form" method="POST" action="./productadd.php" enctype="multipart/form-data">
       
             <!-- Upload Image -->
             <div class="form-group">

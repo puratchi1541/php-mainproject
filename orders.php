@@ -1,46 +1,47 @@
 <?php
 session_start();
-include_once('./config/config.php'); // make sure this is included
+include_once('./config/config.php');
 
 if(!isset($_SESSION['username'])){
     header("Location: login.php");
     exit();
 }
 
-if(isset($_GET['product_id'])){
-    $product_id = (int)$_GET['product_id'];
-} else {
+if(!isset($_GET['product_id'])){
     header("Location: product.php");
     exit();
 }
 
-// Fetch product info
+$product_id = (int)$_GET['product_id'];
 $sql = "SELECT * FROM addproduct WHERE id=$product_id";
 $result = mysqli_query($con, $sql);
+
 if(mysqli_num_rows($result) == 0){
-    echo "Product not found";
-    exit();
+    die("Product not found");
 }
+
 $row = mysqli_fetch_assoc($result);
-
 $uname = $_SESSION['username'];
-$productname = $row['pname'];
-$price = $row['pprice'];
+$productname = mysqli_real_escape_string($con, $row['pname']);
+$price = floatval($row['pprice']);
 
-// Handle form submission
 if(isset($_POST['order'])){
     $address = mysqli_real_escape_string($con, $_POST['address']);
     $phone = mysqli_real_escape_string($con, $_POST['phone']);
 
     $insertquery = "INSERT INTO orders(username, productname, price, address, phone)
-                    VALUES('$uname', '$productname', '$price', '$address', '$phone')";
+                    VALUES('$uname', '$productname', $price, '$address', '$phone')";
+
     $res = mysqli_query($con, $insertquery);
 
     if($res){
-        echo "<script>alert('Order placed successfully'); window.location.href='product.php';</script>";
+        echo "<script>
+                alert('Order placed successfully');
+                
+              </script>";
         exit();
     } else {
-        echo "<script>alert('Failed to place order');</script>";
+        die("Error: " . mysqli_error($con));
     }
 }
 ?>

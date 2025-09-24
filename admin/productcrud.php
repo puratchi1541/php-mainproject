@@ -6,7 +6,7 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
     exit();
 }
 
-$query = "SELECT * FROM addproduct";
+$query = "SELECT * FROM addproduct order by id desc";
 $result = mysqli_query($con, $query);
 if (!$result) {
     die("Query Failed: " . mysqli_error($con));
