@@ -218,6 +218,24 @@
   background: #e74c3c;
 }
 
+.filtered-products .products-grid {
+  /* display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 32px; */
+  display: flex;
+  gap: 32px;
+  margin-bottom: 5%;
+}
+
+.filtered-products  .product-card {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease;
+  width: 352px;
+}
+
 /* -------------------------------- */
 /* Categories Section */
 /* -------------------------------- */

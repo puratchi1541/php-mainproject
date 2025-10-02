@@ -106,7 +106,7 @@ $row = mysqli_fetch_assoc($result);
   <button class="btn btn-outline" onclick="applyPromo()">Apply</button>
 </div> -->
 
-<form action="orders.php" method="POST">
+<form action="checkout.php" method="POST">
   <input type="hidden" name="product_id" value="<?php echo $row['id']; ?>">
   <input type="hidden" name="total_price" id="totalPriceInput" value="<?php echo $row['pprice']; ?>">
   <input type="username" name="username" value="<?php echo $_SESSION['username']; ?>" hidden>

@@ -83,11 +83,11 @@ $totalProducts = $productResult ? mysqli_fetch_assoc($productResult)['total_prod
             while ($row = mysqli_fetch_assoc($result)) {
                 echo "<tr>
                         <td>{$orderNo}</td>
-                        <td>{$row['product']}</td>
+                        <td>{$row['product_name']}</td>
                         <td>₹{$row['price']}</td>
-                        <td>{$row['fullname']}</td>
+                        <td>{$row['username']}</td>
                         <td>{$row['address']}</td>
-                        <td>{$row['phone']}</td>
+                        <td>{$row['mobile']}</td>
                       </tr>";
                 $orderNo++;
             }

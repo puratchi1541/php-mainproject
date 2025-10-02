@@ -1,45 +1,45 @@
 <?php
 session_start();
 include('./config/config.php'); 
+include('./head.php');
 
 $message = "";
 
-// ---------- Registration ----------
+// ---------- User Registration ----------
 if (isset($_POST['register'])) {
-    $name  = $_POST['name'];
-    $email = $_POST['email'];
-    $pass  = md5($_POST['password']); 
+    $name  = mysqli_real_escape_string($con, $_POST['name']);
+    $email = mysqli_real_escape_string($con, $_POST['email']);
+    $pass  = md5($_POST['password']); // or use password_hash() for more security
 
-    $query = "INSERT INTO users (name,email,password,role) VALUES ('$name','$email','$pass','user')";
-    if (mysqli_query($con, $query)) {
-        echo "<script>alert('Registration successful! Please login to continue.');</script>";
-         header("Location: ./login.php");
+    // Check if email already exists
+    $check = mysqli_query($con, "SELECT * FROM users WHERE email='$email'");
+    if(mysqli_num_rows($check) > 0){
+        $message = "Email already registered. Please login.";
     } else {
-        $message = "Error: " . mysqli_error($con);
+        $query = "INSERT INTO users (name,email,password,role) VALUES ('$name','$email','$pass','user')";
+        if (mysqli_query($con, $query)) {
+            echo "<script>alert('Registration successful! Please login.');</script>";
+        } else {
+            $message = "Error: " . mysqli_error($con);
+        }
     }
 }
 
-// ---------- Login ----------
+// ---------- User Login ----------
 if (isset($_POST['login'])) {
-    $email = $_POST['email'];
-    $pass  = md5($_POST['password']);
+    $email = mysqli_real_escape_string($con, $_POST['email']);
+    $pass  = md5($_POST['password']); 
 
-    $query = "SELECT * FROM users WHERE email='$email' AND password='$pass'";
+    $query = "SELECT * FROM users WHERE email='$email' AND password='$pass' AND role='user'";
     $result = mysqli_query($con, $query);
 
     if ($result && mysqli_num_rows($result) == 1) {
-      $row = mysqli_fetch_assoc($result);
-
+        $row = mysqli_fetch_assoc($result);
         $_SESSION['username'] = $row['name'];
         $_SESSION['role']     = $row['role'];
 
-        if ($row['role'] == 'admin') {
-            header("Location: ./admin/admin.php");
-            exit();
-        } else {
-            header("Location: index.php");
-            exit();
-        }
+        header("Location: index.php"); // redirect after login
+        exit();
     } else {
         $message = "Invalid email or password.";
     }
@@ -47,53 +47,29 @@ if (isset($_POST['login'])) {
 
 // flags for which form to show
 $showRegister = isset($_GET['action']) && $_GET['action'] == 'register';
-$showAdmin    = isset($_GET['action']) && $_GET['action'] == 'admin';
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LuxTime Login</title>
+  <title>LuxTime User Login/Register</title>
   <link rel="stylesheet" href="./css/login.css">
 </head>
 <body>
   <div class="login-container">
     <h1>LuxTime</h1>
     <p>
-      <?php 
-        if ($showRegister) { 
-            echo "Create your account"; 
-        } else if ($showAdmin) {
-            echo "Admin Login"; 
-        } else { 
-            echo "Welcome back! Please login to continue"; 
-        } 
-      ?>
+      <?php echo $showRegister ? "Create your account" : "Welcome back! Please login"; ?>
     </p>
 
     <?php if ($message != "") { ?>
         <p class="message"><?php echo $message; ?></p>
     <?php } ?>
 
-    <!-- Admin Login Form -->
-    <?php if ($showAdmin) { ?>
-    <form method="post">
-      <div class="input-group">
-        <label>Email Address</label>
-        <input type="email" name="email" placeholder="Enter admin email" required>
-      </div>
-      <div class="input-group">
-        <label>Password</label>
-        <input type="password" name="password" placeholder="Enter password" required>
-      </div>
-      <button type="submit" name="login" class="btn">Login as Admin</button>
-      <p>Back to <a href="login.php">User Login</a></p>
-    </form>
-    <?php } ?>
-
-    <!-- User Login Form -->
-    <?php if (!$showRegister && !$showAdmin) { ?>
+    <!-- Login Form -->
+    <?php if (!$showRegister) { ?>
     <form method="post">
       <div class="input-group">
         <label>Email Address</label>
@@ -105,7 +81,6 @@ $showAdmin    = isset($_GET['action']) && $_GET['action'] == 'admin';
       </div>
       <button type="submit" name="login" class="btn">Login</button>
       <p>Don’t have an account? <a href="login.php?action=register">Register Now</a></p>
-      <p>Admin? <a href="login.php?action=admin">Login Here</a></p>
     </form>
     <?php } ?>
 

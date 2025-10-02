@@ -8,9 +8,11 @@ if ($page == "index.php") {
     $title = "LuxTime - Our Collection";
 } elseif ($page == "about.php") {
     $title = "About - LuxTime";
+} elseif ($page == "description.php") {
+    $title = "Cart - LuxTime";
 }
 ?>
-<!DOCTYPE html>
+<!DOCTYPE html>     
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -27,15 +29,20 @@ if ($page == "index.php") {
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <?php if ($page == "index.php") { ?>
+  <?php if ($page == "index.php" || $page == "admin/index.php") { ?>
     <link rel="stylesheet" href="./css/home.css">
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="../css/login.css">
+
   <?php } 
   elseif ($page == "product.php") { ?>
     <link rel="stylesheet" href="./css/product.css">
   <?php } 
   elseif ($page == "about.php") { ?>
     <link rel="stylesheet" href="./css/about.css">
+  <?php } 
+  elseif ($page == "checkout.php") { ?>
+    <link rel="stylesheet" href="./css/checkout.css">
   <?php } 
   
   ?>
