@@ -1,9 +1,10 @@
 <?php
 session_start();
 include '../config/config.php';
-if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
-    header("Location: login.php");
-    exit();
+if (!isset($_SESSION['username']) || !in_array($_SESSION['role'], ['admin', 'superadmin'])) {
+  // redirect to admin login page
+  header("Location: index.php");
+  exit();
 }
 
 $query = "SELECT * FROM addproduct order by id desc";
@@ -92,6 +93,7 @@ if (!$result) {
         </section>
     </div>
 </div>
+<?php include('footer.php'); ?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>

@@ -2,13 +2,15 @@
 session_start();
 include '../config/config.php';
 
-if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
-    header("Location: login.php");
+// Allow access for both admin and superadmin
+if (!isset($_SESSION['username']) || !in_array($_SESSION['role'], ['admin', 'superadmin'])) {
+  // redirect to admin login page
+  header("Location: index.php");
     exit();
 }
 
-// Update role
-if (isset($_POST['update_role'])) {
+// Update role (only superadmin)
+if (isset($_POST['update_role']) && $_SESSION['role'] === 'superadmin') {
     $uid  = intval($_POST['user_id']);
     $role = mysqli_real_escape_string($con, $_POST['role']);
 
@@ -20,8 +22,8 @@ if (isset($_POST['update_role'])) {
     }
 }
 
-// Delete user
-if (isset($_GET['delete'])) {
+// Delete user (only superadmin)
+if (isset($_GET['delete']) && $_SESSION['role'] === 'superadmin') {
     $uid = intval($_GET['delete']);
     mysqli_query($con, "DELETE FROM users WHERE id=$uid");
     header("Location: manageusers.php");
@@ -77,22 +79,33 @@ if (!$result) {
                   <td><?php echo htmlspecialchars($row['name']); ?></td>
                   <td><?php echo htmlspecialchars($row['email']); ?></td>
                   <td>
-                    <form method="post" style="display:flex;gap:6px;">
-                      <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
-                      <select name="role" class="form-select">
-                        <option value="admin" <?php if($row['role']=='admin') echo 'selected'; ?>>Admin</option>
-                        <option value="user"  <?php if($row['role']=='user')  echo 'selected'; ?>>User</option>
-                      </select>
-                      <button type="submit" name="update_role" class="btn edit-btn">Update</button>
-                    </form>
+                    <?php if ($_SESSION['role'] === 'superadmin') : ?>
+                        <!-- Superadmin: show form to change role -->
+                        <form method="post" style="display:flex;gap:6px;">
+                          <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
+                          <select name="role" class="form-select">
+                            <option value="admin" <?php if($row['role']=='admin') echo 'selected'; ?>>Admin</option>
+                            <option value="user"  <?php if($row['role']=='user')  echo 'selected'; ?>>User</option>
+                          </select>
+                          <button type="submit" name="update_role" class="btn edit-btn">Update</button>
+                        </form>
+                    <?php else: ?>
+                        <!-- Admin: just display role -->
+                        <span><?php echo ucfirst($row['role']); ?></span>
+                    <?php endif; ?>
                   </td>
-                  <!-- <td class="actions">
-                    <a href="usercrud.php?delete=<?php echo $row['id']; ?>"
+                  <!-- Optional delete button only for superadmin -->
+                  <!--
+                  <?php if ($_SESSION['role'] === 'superadmin') : ?>
+                  <td class="actions">
+                    <a href="manageusers.php?delete=<?php echo $row['id']; ?>"
                        class="btn delete-btn"
                        onclick="return confirm('Delete this user?');">
                        <i class="fas fa-trash"></i> Delete
                     </a>
-                  </td> -->
+                  </td>
+                  <?php endif; ?>
+                  -->
                 </tr>
                 <?php } ?>
               </tbody>
@@ -103,6 +116,8 @@ if (!$result) {
 
     </div>
 </div>
+
+<?php include_once('footer.php'); ?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>

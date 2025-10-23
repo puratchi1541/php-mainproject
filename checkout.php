@@ -4,8 +4,9 @@ include_once('./config/config.php');
 include_once('./head.php');
 
 if(!isset($_SESSION['username'])){
-    header("Location: login.php");
-    exit();
+  $return = urlencode($_SERVER['REQUEST_URI']);
+  header("Location: login.php?next={$return}");
+  exit();
 }
 
 if(!isset($_POST['product_id'])){
@@ -34,8 +35,9 @@ $product_name = $row['pname'];
     </a>
 
     <form class="order-form" action="orders.php" method="POST">
-        <input type="hidden" name="product_name" value="<?php echo $product_name; ?>">
-        <input type="hidden" name="price" value="<?php echo $total_price; ?>">
+    <input type="hidden" name="product_id" value="<?php echo $product_id; ?>">
+    <input type="hidden" name="product_name" value="<?php echo $product_name; ?>">
+    <input type="hidden" name="price" value="<?php echo $total_price; ?>">
 
         <div class="form-group">
           <label for="name">Name</label>

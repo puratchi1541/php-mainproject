@@ -5,6 +5,12 @@ include('./head.php');
 
 $message = "";
 
+// preserve next parameter so we can redirect users back after login
+$next = '';
+if (isset($_GET['next'])) {
+  $next = $_GET['next'];
+}
+
 // ---------- User Registration ----------
 if (isset($_POST['register'])) {
     $name  = mysqli_real_escape_string($con, $_POST['name']);
@@ -33,13 +39,34 @@ if (isset($_POST['login'])) {
     $query = "SELECT * FROM users WHERE email='$email' AND password='$pass' AND role='user'";
     $result = mysqli_query($con, $query);
 
-    if ($result && mysqli_num_rows($result) == 1) {
+  if ($result && mysqli_num_rows($result) == 1) {
         $row = mysqli_fetch_assoc($result);
-        $_SESSION['username'] = $row['name'];
-        $_SESSION['role']     = $row['role'];
+    // Clear any admin-related session flags to avoid cross-login state
+    unset($_SESSION['is_admin']);
+    // Set user session
+    $_SESSION['username'] = $row['name'];
+    $_SESSION['role']     = $row['role'];
+    $_SESSION['is_user'] = true;
+    // redirect to next if provided and safe (internal URL)
+    $redirect = 'index.php';
+    if (!empty($_POST['next'])) {
+      $candidate = $_POST['next'];
+    } elseif (!empty($next)) {
+      $candidate = $next;
+    } else {
+      $candidate = '';
+    }
 
-        header("Location: index.php"); // redirect after login
-        exit();
+    if (!empty($candidate)) {
+      // basic safety: allow only internal paths
+      $decoded = urldecode($candidate);
+      if (strpos($decoded, 'http://') === false && strpos($decoded, 'https://') === false && strpos($decoded, '..') === false) {
+        $redirect = $decoded;
+      }
+    }
+
+    header("Location: {$redirect}"); // redirect after login
+    exit();
     } else {
         $message = "Invalid email or password.";
     }
@@ -71,6 +98,9 @@ $showRegister = isset($_GET['action']) && $_GET['action'] == 'register';
     <!-- Login Form -->
     <?php if (!$showRegister) { ?>
     <form method="post">
+      <?php if(!empty($next)): ?>
+        <input type="hidden" name="next" value="<?php echo htmlspecialchars($next); ?>">
+      <?php endif; ?>
       <div class="input-group">
         <label>Email Address</label>
         <input type="email" name="email" placeholder="Enter your email" required>

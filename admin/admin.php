@@ -2,9 +2,10 @@
 session_start();
 include '../config/config.php';
 
-if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
-    header("Location: login.php");
-    exit();
+if (!isset($_SESSION['username']) || !in_array($_SESSION['role'], ['admin', 'superadmin'])) {
+  // redirect to admin login page
+  header("Location: index.php");
+  exit();
 }
 
 $userQuery = "SELECT COUNT(*) as total_users FROM users WHERE role='user'";
@@ -28,27 +29,37 @@ $totalProducts = $productResult ? mysqli_fetch_assoc($productResult)['total_prod
 <body>
 
 <div class="dashboard-container">
-  <div class="sidebar">
-    <a href="#" class="logo"><i class="fas fa-clock"></i></a>
-    <h2>LuxTime</h2>
-    <ul>
-      <li><a href="./admin.php">Dashboard</a></li>
-      <li><a href="./productcrud.php">Products</a></li>
-      <li><a href="./manageusers.php">Users</a></li>
-      <li><a href="./query.php">Queries</a></li>
-      <li><a href="../logout.php">Logout</a></li>
-    </ul>
-  </div>
+   <?php include_once('./sidebar.php'); ?> 
 
   <div class="main-content">
     <!-- <div class="topbar">
       <h2 class="section-title">Admin Dashboard</h2>
     </div> -->
 
+  <?php
+// Use qty if the orders table stores unit price in `price` and quantity in `qty`.
+// Otherwise fall back to SUM(price) (when price already stores total per order).
+$colCheck = mysqli_query($con, "SHOW COLUMNS FROM orders LIKE 'qty'");
+if ($colCheck && mysqli_num_rows($colCheck) > 0) {
+  $query = "SELECT SUM(price * COALESCE(qty,1)) AS total_sales FROM orders";
+} else {
+  $query = "SELECT SUM(price) AS total_sales FROM orders";
+}
+$result = mysqli_query($con, $query);
+$row = $result ? mysqli_fetch_assoc($result) : null;
+
+$totalSales = $row['total_sales'] ?? 0;
+?>
+
+
+
     <div class="stats">
       <div class="stat-card"><h4>Total Users</h4><p><?php echo $totalUsers; ?></p></div>
-      <div class="stat-card"><h4>Total Sales</h4><p>₹2,50,000</p></div>
-      <div class="stat-card"><h4>Revenue</h4><p>₹4,80,000</p></div>
+      <div class="stat-card">
+  <h4>Total Sales</h4>
+  <p>₹<?= number_format($totalSales, 2) ?></p>
+</div>
+      <!-- <div class="stat-card"><h4>Revenue</h4><p>₹4,80,000</p></div> -->
       <div class="stat-card"><h4>Products</h4><p><?php echo $totalProducts; ?></p></div>
     </div>
 
@@ -63,9 +74,9 @@ $totalProducts = $productResult ? mysqli_fetch_assoc($productResult)['total_prod
           <thead>
             <tr>
               <th>Order ID</th>
+              <th>Full Name</th>
               <th>Product Name</th>
               <th>Product Price</th>
-              <th>Full Name</th>
               <th>Address</th>
               <th>Phone</th>
             </tr>
@@ -83,9 +94,9 @@ $totalProducts = $productResult ? mysqli_fetch_assoc($productResult)['total_prod
             while ($row = mysqli_fetch_assoc($result)) {
                 echo "<tr>
                         <td>{$orderNo}</td>
+                        <td>{$row['username']}</td>
                         <td>{$row['product_name']}</td>
                         <td>₹{$row['price']}</td>
-                        <td>{$row['username']}</td>
                         <td>{$row['address']}</td>
                         <td>{$row['mobile']}</td>
                       </tr>";
@@ -99,6 +110,7 @@ $totalProducts = $productResult ? mysqli_fetch_assoc($productResult)['total_prod
     </section>
   </div>
 </div>
+<?php include_once('footer.php'); ?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>

@@ -1,8 +1,10 @@
 <?php
 session_start();
 if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
-    exit();
+  // send user to login and return them here after successful login
+  $return = urlencode($_SERVER['REQUEST_URI']);
+  header("Location: login.php?next={$return}");
+  exit();
 }
 include_once('./config/config.php');
 
@@ -66,13 +68,13 @@ $row = mysqli_fetch_assoc($result);
   </div>
 
   <div class="product-actions">
-    <button class="icon-btn delete" onclick="emptyCart()" title="Remove item">
+    <!-- <button class="icon-btn delete" onclick="emptyCart()" title="Remove item">
       <i class="bi bi-trash"></i>
-    </button>
+    </button> -->
     <div class="quantity-control">
-      <button class="icon-btn subbtn" title="Decrease quantity"><i class="bi bi-dash"></i></button>
+      <!-- <button class="icon-btn subbtn" title="Decrease quantity"><i class="bi bi-dash"></i></button> -->
       <span class="quantity" id="quantity">1</span>
-      <button class="icon-btn addbtn" title="Increase quantity"><i class="bi bi-plus"></i></button>
+      <!-- <button class="icon-btn addbtn" title="Increase quantity"><i class="bi bi-plus"></i></button> -->
     </div>
   </div>
 </div>

@@ -30,7 +30,7 @@ if (isset($_POST['update_product'])) {
     if (!empty($_FILES['pimage']['name'])) {
         $imgname  = $_FILES['pimage']['name'];
         $tempname = $_FILES['pimage']['tmp_name'];
-        $folder   = "./images/product/" . $imgname;
+        $folder   = "../images/product/" . $imgname;
         move_uploaded_file($tempname, $folder);
         $query = "UPDATE addproduct 
                   SET pname='$pname', 

@@ -3,16 +3,13 @@ session_start();
 
 $_SESSION = [];
 
-if (ini_get("session.use_cookies")) {
-    $params = session_get_cookie_params();
-    setcookie(session_name(), '', time() - 42000,
-        $params['path'], $params['domain'],
-        $params['secure'], $params['httponly']
-    );
-}
 
+unset($_SESSION['is_user']);
+// Clear any admin or user flags to be safe
+unset($_SESSION['is_user']);
+unset($_SESSION['is_admin']);
+unset($_SESSION['username']);
+unset($_SESSION['role']);
 
-session_destroy();
-
-header("Location: ./admin/index.php");
+header("Location: index.php");
 exit;

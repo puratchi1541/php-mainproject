@@ -76,7 +76,8 @@ body {
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 32px;
+  padding: 0 32px 32px;
+ 
 }
 
 /* Navbar */
@@ -114,10 +115,16 @@ body {
 .logo i {
   color: var(--color-gold);
 }
-
+.nav-user {
+  display: flex ;
+  align-items: center;
+  gap: 12px;
+}
 .nav-menu {
   list-style: none;
   display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 32px;
   margin: 0;
   padding: 0;
@@ -371,6 +378,16 @@ body {
   .stat-item h3 {
     font-size: 15px;
   }
+.nav-menu {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 32px;
+  margin: 0;
+  padding: 0;
+}
+
 }
 
 @media only screen and (max-width: 425px){
@@ -397,6 +414,7 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  margin-left: 2%;
 }
 
 .btn-logout i {
@@ -413,3 +431,48 @@ body {
 }
 
 
+
+
+.menu-toggle {
+    display: none;
+}
+
+.hamburger {
+    display: none;
+}
+
+@media only screen and (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+    .nav-menu {
+        transform: translateY(-150%);
+    }
+    .menu-toggle:checked ~ .nav-menu {
+        transform: translateY(0);
+    }
+}
+
+
+
+.nav-user {
+    display: flex !important;       
+    align-items: center !important; 
+    gap: 12px;                      
+    white-space: nowrap; 
+    margin-left: 6%           
+}
+
+.nav-user .username {
+    display: inline-block;         
+    margin: 0;                     
+    font-size: 14px;                
+    color: var(--color-light);
+    font-weight: 500;
+}
+
+@media only screen and (min-width: 768px) {
+    .nav-user {
+         margin-left: 3%   
+    }
+}

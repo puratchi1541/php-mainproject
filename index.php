@@ -61,44 +61,39 @@ include_once('./header.php');
         </div>
     </section>
 
-    <!-- Featured Products Section -->
-    <section class="featured" id="featured">
-        <div class="container">
-            <h2 class="section-title">Featured Collections</h2>
-            <div class="product-grid">
-                <a href="./product.php">
-                    <div class="product-card">
-                        <div class="product-image classic-heritage"></div>
-                        <div class="product-info">
-                            <h3>Classic Heritage</h3>
-                            <p>Timeless elegance meets modern precision</p>
-                            <div class="product-price">RS 2,499</div>
-                        </div>
+<!-- Featured Products Section -->
+<section class="featured" id="featured">
+    <div class="container">
+        <h2 class="section-title">Featured Collections</h2>
+        <div class="product-grid">
+            <?php
+            $featuredQuery = "SELECT * FROM addproduct ORDER BY id DESC LIMIT 3";
+            $featuredResult = mysqli_query($con, $featuredQuery);
+
+            if($featuredResult && mysqli_num_rows($featuredResult) > 0){
+                while($row = mysqli_fetch_assoc($featuredResult)){
+            ?>
+            <a href="description.php?product_id=<?php echo $row['id']; ?>">
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('./images/product/<?php echo $row['pimage']; ?>');"></div>
+                    <div class="product-info">
+                        <h3><?php echo $row['pname']; ?></h3>
+                        <p><?php echo $row['pcategory']; ?></p>
+                        <div class="product-price">RS <?php echo $row['pprice']; ?></div>
                     </div>
-                </a>
-                <a href="./product.php">
-                    <div class="product-card">
-                        <div class="product-image sport-elite"></div>
-                        <div class="product-info">
-                            <h3>Sport Elite</h3>
-                            <p>Performance-driven design for active lifestyles</p>
-                            <div class="product-price">RS 3,299</div>
-                        </div>
-                    </div>
-                </a>
-                <a href="./product.php">
-                    <div class="product-card">
-                        <div class="product-image luxury-prestige"></div>
-                        <div class="product-info">
-                            <h3>Luxury Prestige</h3>
-                            <p>Ultimate sophistication in horology</p>
-                            <div class="product-price">RS 5,999</div>
-                        </div>
-                    </div>
-                </a>
-            </div>
+                </div>
+            </a>
+            <?php
+                }
+            } else {
+                echo "<p>No featured products found.</p>";
+            }
+            ?>
         </div>
-    </section>
+    </div>
+</section>
+
+
 
 
     <!-- Carousel Section -->

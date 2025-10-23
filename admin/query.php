@@ -1,12 +1,13 @@
 <?php
 session_start();
 include '../config/config.php';
-if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
-    header("Location: login.php");
-    exit();
+if (!isset($_SESSION['username']) || !in_array($_SESSION['role'], ['admin', 'superadmin'])) {
+  // redirect to admin login page
+  header("Location: index.php");
+  exit();
 }
 
-$query  = "SELECT * FROM queries ORDER BY id ASC";
+$query  = "SELECT * FROM queries ORDER BY id DESC";
 $result = mysqli_query($con, $query);
 if (!$result) {
     die("Query Failed: " . mysqli_error($con));
@@ -69,6 +70,7 @@ if (!$result) {
         </section>
     </div>
 </div>
+<?php include_once('footer.php'); ?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
